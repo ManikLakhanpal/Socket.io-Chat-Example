@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <h1>Sasti Chat</h1>
+    <ul id="data">
+        <!-- ! We will use JS to add li when message is emitted by the server. -->
+    </ul>
+    <input type="text" id="messageTxt" placeholder="Enter Message" />
+    <button id="sendBtn">Send</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        const sendBtn = document.getElementById("sendBtn");
+        const messageInput = document.getElementById("messageTxt");
+        const data = document.getElementById("data");
+
+        socket.on('message', (msg) => {
+            const li = document.createElement("li");
+            li.textContent = msg;
+            data.appendChild(li); 
+        })
+
+        sendBtn.addEventListener('click', (e) => {
+            const message = messageInput.value;
+            socket.emit('user-message', message);
+        })
+    </script>
+</body>
+</html>
